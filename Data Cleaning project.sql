@@ -27,7 +27,7 @@ FROM layoffs;
 -- Do not work on the raw data.
 
 -- Begin Data Cleaning
--- 1 Removeing Duplicates
+-- 1 Removing Duplicates
 SELECT *,
 ROW_NUMBER() OVER( 
 	PARTITION BY company, industry, total_laid_off, percentage_laid_off, `date`) AS row_num
