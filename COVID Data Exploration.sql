@@ -49,14 +49,16 @@ order by 1,2
 --Check the total Cases vs Population
 select Location, date, population, total_cases, (CONVERT(float,total_cases)/NULLIF(CONVERT(float,population),0))*100 as PercentagePopulationInfected   
 from Projects..CovidDeath
-where continent is not null
+--where continent is not null  -- "IS NOT NULL" could not be used because the dataset is in csv format not excel
+where NOT continent = '0'	--works the same
 --where Location like '%canada%'
 order by 1,2
 
 --Check Countries with Highest Infection rate vs Population
 select Location, population, MAX(total_cases) as HighestInfectionCount, MAX(CONVERT(float,total_cases)/NULLIF(CONVERT(float,population),0))*100 as PercentagePopulationInfected   
 from Projects..CovidDeath
-where continent is not null
+--where continent is not null
+where NOT continent = '0'
 group by Location, Population
 order by PercentagePopulationInfected DESC
 
@@ -70,7 +72,8 @@ order by TotalDeathCount DESC
 
 select continent, MAX(cast(total_deaths as int)) as TotalDeathCount   
 from Projects..CovidDeath
-where continent is not null
+--where continent is not null
+where NOT continent = '0'
 group by continent
 order by TotalDeathCount DESC
 
@@ -94,7 +97,8 @@ From Projects..CovidDeath dea
 Join Projects..CovidVacc vac
 	on dea.location = vac.location
 	and dea.date = vac.date
-where dea.continent is not null
+--where dea.continent is not null
+where NOT dea.continent = '0'
 order by 2,3
 
 -- Shows Percentage of Population that has recieved at least one Covid Vaccine
@@ -106,7 +110,8 @@ From Projects..CovidDeath dea
 Join Projects..CovidVacc vac
 	On dea.location = vac.location
 	and dea.date = vac.date
-where dea.continent is not null 
+--where dea.continent is not null 
+where NOT dea.continent = '0'
 order by 2,3
 
 -- Using CTE to perform Calculation on Partition By in previous query
@@ -121,7 +126,8 @@ From Projects..CovidDeath dea
 Join Projects..CovidVacc vac
 	On dea.location = vac.location
 	and dea.date = vac.date
-where dea.continent is not null 
+--where dea.continent is not null
+where NOT dea.continent = '0'
 --order by 2,3
 )
 Select *, (RollingPeopleVaccinated/Population)*100
@@ -169,5 +175,6 @@ From Projects..CovidDeath dea
 Join Projects..CovidVacc vac
 	On dea.location = vac.location
 	and dea.date = vac.date
-where dea.continent is not null 
+--where dea.continent is not null
+where NOT dea.continent = '0'
 
